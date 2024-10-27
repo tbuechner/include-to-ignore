@@ -1,14 +1,21 @@
 {
   "name": "include-to-ignore",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "Convert include patterns to .ignore format",
+  "main": "dist/index.js",
+  "bin": {
+    "include-to-ignore": "./dist/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "pkg": "pkg .",
+    "package": "npm run build && npm run pkg"
+  },
+  "pkg": {
+    "targets": ["node18-linux-x64", "node18-macos-x64", "node18-win-x64"],
+    "outputPath": "executables"
+  },
   "dependencies": {
     "commander": "^12.1.0"
   },
