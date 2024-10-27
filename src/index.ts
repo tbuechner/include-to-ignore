@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-// src/index.ts
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { program } from 'commander';

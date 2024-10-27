@@ -10,7 +10,9 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "pkg": "pkg .",
-    "package": "npm run build && npm run pkg"
+    "package": "npm run build && npm run pkg",
+    "test": "bash ./test.sh",
+    "clean": "rm -rf test-include-to-ignore dist"
   },
   "pkg": {
     "targets": ["node18-linux-x64", "node18-macos-x64", "node18-win-x64"],
