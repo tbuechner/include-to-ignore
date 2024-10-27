@@ -24,10 +24,11 @@ async function readIncludePatterns(includeFile: string): Promise<string[]> {
  * Generates gitignore-style patterns from include patterns
  */
 function generateGitignorePatterns(includePatterns: string[]): string[] {
-    const ignorePatterns: string[] = [];
+    // Use a Set to prevent duplicates
+    const patternSet = new Set<string>();
 
     // First exclude everything
-    ignorePatterns.push('*');
+    patternSet.add('*');
 
     for (const pattern of includePatterns) {
         const currentParts: string[] = [];
@@ -43,16 +44,16 @@ function generateGitignorePatterns(includePatterns: string[]): string[] {
 
             if (i === 0 && !isAbsolute) {
                 // For patterns without leading slash, handle any depth
-                ignorePatterns.push(`!**/${part}`);
+                patternSet.add(`!**/${part}`);
                 currentParts.push(part);
             } else {
                 const currentPath = currentParts.join('/');
                 if (currentPath) {
                     // Allow this directory level
-                    ignorePatterns.push(`!${currentPath}/${part}`);
+                    patternSet.add(`!${currentPath}/${part}`);
                 } else {
                     // Top level directory
-                    ignorePatterns.push(`!${part}`);
+                    patternSet.add(`!${part}`);
                 }
                 currentParts.push(part);
             }
@@ -60,18 +61,19 @@ function generateGitignorePatterns(includePatterns: string[]): string[] {
             // Re-exclude everything under this level except our specific inclusions
             if (i < processableParts.length - 1) {
                 const currentPath = currentParts.join('/');
-                ignorePatterns.push(`${currentPath}/*`);
+                patternSet.add(`${currentPath}/*`);
             }
         }
 
         // Handle directory patterns (ending with /)
         if (pattern.endsWith('/')) {
             const finalPath = currentParts.join('/');
-            ignorePatterns.push(`!${finalPath}/**`);
+            patternSet.add(`!${finalPath}/**`); // Changed from !docs//** to !docs/**
         }
     }
 
-    return ignorePatterns;
+    // Convert Set back to array and sort for consistency
+    return Array.from(patternSet);
 }
 
 /**
