@@ -1,0 +1,3 @@
++/src/components/auth
++/src/index.ts
++/docs/
